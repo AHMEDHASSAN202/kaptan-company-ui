@@ -1,0 +1,883 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kaptan - Safe and Comfortable Transfer in Istanbul</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Alpine.js Collapse Plugin -->
+    <script defer src="https://cdn.jsdelivr.net/npm/@alpinejs/collapse@3.x.x/dist/cdn.min.js"></script>
+    <!-- Alpine.js Core -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <!-- Google Fonts - Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Swiper CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        [x-cloak] { display: none !important; }
+        
+        /* Swiper Custom Styles */
+        .swiper-button-next, .swiper-button-prev {
+            background-color: white !important;
+            width: 45px !important;
+            height: 45px !important;
+            border-radius: 50% !important;
+            color: #003399 !important;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1) !important;
+            margin-top: 0 !important;
+            top: 50% !important;
+            transform: translateY(-50%) !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+        }
+        .swiper-button-next:after, .swiper-button-prev:after {
+            font-size: 20px !important;
+            font-weight: bold !important;
+            color: #003399 !important;
+            line-height: 1 !important;
+        }
+        .swiper-button-prev:after {
+            content: '←' !important;
+        }
+        .swiper-button-next:after {
+            content: '→' !important;
+        }
+        .swiper-pagination-bullet-active {
+            background: #003399 !important;
+            width: 30px !important;
+            border-radius: 5px !important;
+        }
+        
+        .testimonials-swiper .swiper-slide {
+            opacity: 0.4;
+            transition: all 0.5s ease;
+        }
+        
+        .testimonials-swiper .swiper-slide-fully-visible,
+        .testimonials-swiper .swiper-slide-active,
+        .testimonials-swiper .swiper-slide-prev,
+        .testimonials-swiper .swiper-slide-next {
+            opacity: 1;
+        }
+        
+        /* Tours Swiper Opacity */
+        .tours-swiper .swiper-slide {
+            opacity: 0.5;
+            transition: all 0.5s ease;
+        }
+        
+        .tours-swiper .swiper-slide-fully-visible,
+        .tours-swiper .swiper-slide-active,
+        .tours-swiper .swiper-slide-prev,
+        .tours-swiper .swiper-slide-next {
+            opacity: 1;
+        }
+        
+        /* Moments Swiper Opacity and Scale */
+        .moments-swiper .swiper-slide {
+            opacity: 1;
+            transform: scale(0.8);
+        }
+        
+        .moments-swiper .swiper-slide-active {
+            opacity: 1;
+            transform: scale(1.2, 1);
+            z-index: 10;
+        }
+
+        /* Moments Specific Navigation */
+        .moments-button-prev, .moments-button-next {
+            background-color: transparent !important;
+            box-shadow: none !important;
+            border: none !important;
+            width: 56px !important;
+            height: 56px !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+        }
+
+        .moments-button-prev:after, .moments-button-next:after {
+            display: none !important;
+        }
+
+        .moments-button-next {
+            background-color: #003399 !important;
+            border-radius: 50% !important;
+        }
+    </style>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: '#003399',
+                        secondary: '#f3f4f6',
+                        accent: '#ffcc00',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-white text-gray-900 font-sans">
+    <div id="app" x-data="{ mobileMenuOpen: false, scrolled: false }" @scroll.window="scrolled = (window.pageYOffset > 20) ? true : false">
+        <!-- Navigation Header -->
+        <header :class="scrolled ? 'bg-white shadow-md' : 'bg-transparent'" class="fixed w-full z-50 transition-all duration-300">
+            <div class="container mx-auto px-4 md:px-6">
+                <div class="flex items-center justify-between h-20">
+                    <div class="flex-shrink-0 flex items-center">
+                        <a href="#" class="flex items-center space-x-2">
+                           <img :src="scrolled ? 'images/logo-blue.png' : 'images/logo.png'" alt="Logo" class="w-30 h-10">
+                        </a>
+                    </div>
+                    <nav class="hidden md:flex items-center space-x-10">
+                        <a href="tours.html" class="text-md font-medium hover:text-blue-400 transition-colors" :class="scrolled ? 'text-gray-700' : 'text-white'">Tours</a>
+                        <a href="#" class="text-md font-medium hover:text-blue-400 transition-colors" :class="scrolled ? 'text-gray-700' : 'text-white'">Reviews</a>
+                        <a href="#" class="text-md font-medium hover:text-blue-400 transition-colors" :class="scrolled ? 'text-gray-700' : 'text-white'">About</a>
+                        <a href="#" class="text-md font-medium hover:text-blue-400 transition-colors" :class="scrolled ? 'text-gray-700' : 'text-white'">FAQ</a>
+                        <a href="#" class="text-md font-medium hover:text-blue-400 transition-colors" :class="scrolled ? 'text-gray-700' : 'text-white'">Blog</a>
+                    </nav>
+                    <div class="hidden md:flex items-center space-x-6">
+                        <div class="flex items-center space-x-2" :class="scrolled ? 'text-gray-700' : 'text-white'">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path></svg>
+                            <span class="text-sm font-medium">+90 500 123 45 67</span>
+                        </div>
+                        <div class="flex items-center space-x-1" :class="scrolled ? 'text-gray-700' : 'text-white'">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"></path></svg>
+                            <span class="text-sm font-medium">TR</span>
+                        </div>
+                    </div>
+                    <div class="md:hidden">
+                        <button @click="mobileMenuOpen = !mobileMenuOpen" class="p-2 rounded-md" :class="scrolled ? 'text-gray-700' : 'text-white'">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" x-show="!mobileMenuOpen"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" x-show="mobileMenuOpen" x-cloak><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div x-show="mobileMenuOpen" x-cloak class="md:hidden bg-white shadow-lg absolute top-20 left-0 w-full" @click.away="mobileMenuOpen = false">
+                <div class="px-4 pt-2 pb-6 space-y-1">
+                    <a href="tours.html" class="block px-3 py-2 text-base font-medium text-gray-700 hover:bg-gray-100">Tours</a>
+                    <a href="#" class="block px-3 py-2 text-base font-medium text-gray-700 hover:bg-gray-100">Reviews</a>
+                    <a href="#" class="block px-3 py-2 text-base font-medium text-gray-700 hover:bg-gray-100">About</a>
+                    <a href="#" class="block px-3 py-2 text-base font-medium text-gray-700 hover:bg-gray-100">FAQ</a>
+                    <a href="#" class="block px-3 py-2 text-base font-medium text-gray-700 hover:bg-gray-100">Blog</a>
+                    <div class="border-t border-gray-100 pt-4 pb-2">
+                        <div class="flex items-center px-3 text-gray-700">
+                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path></svg>
+                            <span class="text-sm font-medium">+90 500 123 45 67</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        
+        <!-- Hero Section -->
+        <section class="relative min-h-screen flex flex-col justify-center pt-20 overflow-visible">
+            <div class="absolute inset-0 z-0">
+                <img src="images/hero-section-image.png" class="w-full h-full object-cover" alt="Hero Background">
+                <div class="absolute inset-0 bg-gradient-to-b from-black/60 via-black/20 to-white"></div>
+            </div>
+            <div class="container mx-auto px-4 md:px-6 relative z-10 text-white text-center flex-grow flex flex-col justify-center">
+                <div class="max-w-4xl mx-auto">
+                    <h1 class="text-5xl md:text-7xl font-medium mb-6 leading-[1.15]">Safe and Comfortable<br>Transfer in Istanbul</h1>
+                    <p class="text-xl md:text-2xl opacity-90 font-light tracking-wide">Your destination for safe journeys with premium vehicles and professional drivers</p>
+                </div>
+            </div>
+            <div class="container mx-auto px-4 md:px-6 relative z-20 pb-12 mt-auto">
+                <form action="search-results.html" method="get" x-data="{ transferType: 'transfer', roundTrip: false }" class="bg-white rounded-[2.5rem] shadow-2xl p-6 md:p-8 md:px-12 max-w-6xl mx-auto text-gray-800 text-left border border-gray-100">
+                    <div class="flex items-center justify-between mb-8 border-b border-gray-100 pb-4">
+                        <div class="flex space-x-10">
+                            <button type="button" @click="transferType = 'transfer'" :class="transferType === 'transfer' ? 'text-primary' : 'text-gray-400'" class="font-bold flex items-center space-x-3 transition-all relative">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path></svg>
+                                <span class="text-sm uppercase tracking-wider">Transfer</span>
+                                <div x-show="transferType === 'transfer'" class="absolute -bottom-[17px] left-0 right-0 h-0.5 bg-primary"></div>
+                            </button>
+                            <button type="button" @click="transferType = 'privet'" :class="transferType === 'privet' ? 'text-primary' : 'text-gray-400'" class="font-bold flex items-center space-x-3 transition-all relative">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                <span class="text-sm uppercase tracking-wider">Privet car</span>
+                                <div x-show="transferType === 'privet'" class="absolute -bottom-[17px] left-0 right-0 h-0.5 bg-primary"></div>
+                            </button>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <span class="text-xs font-bold text-gray-500 uppercase tracking-tighter">Round Trip</span>
+                            <button type="button" @click="roundTrip = !roundTrip" :class="roundTrip ? 'bg-primary' : 'bg-gray-200'" class="relative inline-flex h-5 w-10 items-center rounded-full transition-colors focus:outline-none">
+                                <span :class="roundTrip ? 'translate-x-5' : 'translate-x-1'" class="inline-block h-3 w-3 transform rounded-full bg-white transition-transform"></span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-5 items-center gap-0">
+                        <div class="md:col-span-1 border-r border-gray-100 pr-6 py-2">
+                            <div class="flex items-center space-x-3 mb-2">
+                                <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path></svg>
+                                <span class="text-xs font-bold text-gray-900 uppercase tracking-wider">From</span>
+                            </div>
+                            <input type="text" name="from" placeholder="Istanbul Airport" class="w-full text-sm font-semibold text-gray-500 focus:outline-none placeholder-gray-300">
+                        </div>
+                        <div class="md:col-span-1 border-r border-gray-100 px-6 py-2">
+                            <div class="flex items-center space-x-3 mb-2">
+                                <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path></svg>
+                                <span class="text-xs font-bold text-gray-900 uppercase tracking-wider">To</span>
+                            </div>
+                            <input type="text" name="to" placeholder="Istanbul Airport" class="w-full text-sm font-semibold text-gray-500 focus:outline-none placeholder-gray-300">
+                        </div>
+                        <div class="md:col-span-1 border-r border-gray-100 px-6 py-2">
+                            <div class="flex items-center space-x-3 mb-2">
+                                <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                                <span class="text-xs font-bold text-gray-900 uppercase tracking-wider">Date & Time</span>
+                            </div>
+                            <input type="text" name="date" placeholder="Istanbul Airport" class="w-full text-sm font-semibold text-gray-500 focus:outline-none placeholder-gray-300">
+                        </div>
+                        <div class="md:col-span-1 border-r border-gray-100 px-6 py-2">
+                            <div class="flex items-center space-x-3 mb-2">
+                                <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+                                <span class="text-xs font-bold text-gray-900 uppercase tracking-wider">Passengers</span>
+                            </div>
+                            <input type="number" name="passengers" value="1" class="w-full text-sm font-semibold text-gray-500 focus:outline-none placeholder-gray-300">
+                        </div>
+                        <div class="md:col-span-1 pl-6 flex items-center justify-end">
+                            <button type="submit" class="bg-primary text-white px-8 py-3.5 rounded-xl font-bold flex items-center space-x-2 hover:bg-blue-800 transition-all shadow-xl group">
+                                <svg class="w-5 h-5 transition-transform group-hover:scale-110" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                                <span class="tracking-wide">Search</span>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </section>
+
+        <!-- Testimonials Section -->
+        <section class="py-24 bg-gray-50 overflow-hidden">
+            <div class="container mx-auto px-4 md:px-6">
+                <div class="text-center mb-16">
+                    <h2 class="text-3xl md:text-5xl font-bold mb-4">What Our Customers Say</h2>
+                    <p class="text-gray-600 text-lg max-w-3xl mx-auto">Real experiences from travelers who trusted our service — your comfort and satisfaction are our top priority</p>
+                </div>
+                <div class="relative group px-4 md:px-16">
+                    <div class="swiper testimonials-swiper py-12">
+                        <div class="swiper-wrapper items-stretch">
+                            <!-- Slide 1 -->
+                            <div class="swiper-slide h-auto">
+                                <div class="bg-white rounded-[1.5rem] p-6 md:p-8 shadow-lg hover:shadow-xl border border-gray-100 h-full flex flex-col transition-all duration-300">
+                                    <div class="flex mb-4 gap-1">
+                                        <svg class="w-4 h-4 text-accent" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                                        <svg class="w-4 h-4 text-accent" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                                        <svg class="w-4 h-4 text-accent" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                                        <svg class="w-4 h-4 text-accent" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                                        <svg class="w-4 h-4 text-accent" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                                    </div>
+                                    <p class="text-gray-600 mb-6 text-sm leading-relaxed min-h-[100px]">Excellent service! The driver was on time, the van was clean, and the ride was very comfortable</p>
+                                    <div class="flex items-center mt-auto pt-4 border-t border-gray-100">
+                                        <img src="https://ui-avatars.com/api/?name=Ahmed+Hassan&background=003399&color=fff&size=48&bold=true&rounded=true" alt="Ahmed Hassan" class="w-12 h-12 rounded-full mr-3">
+                                        <div>
+                                            <h4 class="font-semibold text-gray-900 text-sm mb-1">Ahmed Hassan</h4>
+                                            <p class="text-xs text-gray-500">11/5/2023</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Slide 2 -->
+                            <div class="swiper-slide h-auto">
+                                <div class="bg-white rounded-[1.5rem] p-6 md:p-8 shadow-lg hover:shadow-xl border border-gray-100 h-full flex flex-col transition-all duration-300">
+                                    <div class="flex mb-4 gap-1">
+                                        <svg class="w-4 h-4 text-accent" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                                        <svg class="w-4 h-4 text-accent" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                                        <svg class="w-4 h-4 text-accent" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                                        <svg class="w-4 h-4 text-accent" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                                        <svg class="w-4 h-4 text-accent" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                                    </div>
+                                    <p class="text-gray-600 mb-6 text-sm leading-relaxed min-h-[100px]">Easy booking and clear communication. The driver contacted me before pickup, very professional</p>
+                                    <div class="flex items-center mt-auto pt-4 border-t border-gray-100">
+                                        <img src="https://ui-avatars.com/api/?name=Nagham+Abdel-Aleem&background=003399&color=fff&size=48&bold=true&rounded=true" alt="Nagham Abdel-Aleem" class="w-12 h-12 rounded-full mr-3">
+                                        <div>
+                                            <h4 class="font-semibold text-gray-900 text-sm mb-1">Nagham Abdel-Aleem</h4>
+                                            <p class="text-xs text-gray-500">10/5/2025</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Slide 3 -->
+                            <div class="swiper-slide h-auto">
+                                <div class="bg-white rounded-[1.5rem] p-6 md:p-8 shadow-lg hover:shadow-xl border border-gray-100 h-full flex flex-col transition-all duration-300">
+                                    <div class="flex mb-4 gap-1">
+                                        <svg class="w-4 h-4 text-accent" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                                        <svg class="w-4 h-4 text-accent" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                                        <svg class="w-4 h-4 text-accent" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                                        <svg class="w-4 h-4 text-accent" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                                    </div>
+                                    <p class="text-gray-600 mb-6 text-sm leading-relaxed min-h-[100px]">Great value for money! My flight was delayed but the driver waited patiently. Highly recommended!</p>
+                                    <div class="flex items-center mt-auto pt-4 border-t border-gray-100">
+                                        <img src="https://ui-avatars.com/api/?name=Sarah+Johnson&background=003399&color=fff&size=48&bold=true&rounded=true" alt="Sarah Johnson" class="w-12 h-12 rounded-full mr-3">
+                                        <div>
+                                            <h4 class="font-semibold text-gray-900 text-sm mb-1">Sarah Johnson</h4>
+                                            <p class="text-xs text-gray-500">12/5/2023</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Slide 4 -->
+                            <div class="swiper-slide h-auto">
+                                <div class="bg-white rounded-[1.5rem] p-6 md:p-8 shadow-lg hover:shadow-xl border border-gray-100 h-full flex flex-col transition-all duration-300">
+                                    <div class="flex mb-4 gap-1">
+                                        <svg class="w-4 h-4 text-accent" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                                        <svg class="w-4 h-4 text-accent" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                                        <svg class="w-4 h-4 text-accent" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                                        <svg class="w-4 h-4 text-accent" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                                        <svg class="w-4 h-4 text-accent" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                                    </div>
+                                    <p class="text-gray-600 mb-6 text-sm leading-relaxed min-h-[100px]">Perfect for a smooth trip. I'll definitely book again next time I'm in Istanbul. Great experience!</p>
+                                    <div class="flex items-center mt-auto pt-4 border-t border-gray-100">
+                                        <img src="https://ui-avatars.com/api/?name=Emma+Wilson&background=003399&color=fff&size=48&bold=true&rounded=true" alt="Emma Wilson" class="w-12 h-12 rounded-full mr-3">
+                                        <div>
+                                            <h4 class="font-semibold text-gray-900 text-sm mb-1">Emma Wilson</h4>
+                                            <p class="text-xs text-gray-500">14/5/2023</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Slide 5 -->
+                            <div class="swiper-slide h-auto">
+                                <div class="bg-white rounded-[1.5rem] p-6 md:p-8 shadow-lg hover:shadow-xl border border-gray-100 h-full flex flex-col transition-all duration-300">
+                                    <div class="flex mb-4 gap-1">
+                                        <svg class="w-4 h-4 text-accent" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                                        <svg class="w-4 h-4 text-accent" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                                        <svg class="w-4 h-4 text-accent" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                                        <svg class="w-4 h-4 text-accent" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                                    </div>
+                                    <p class="text-gray-600 mb-6 text-sm leading-relaxed min-h-[100px]">On time and very helpful with luggage. Professional service from start to finish</p>
+                                    <div class="flex items-center mt-auto pt-4 border-t border-gray-100">
+                                        <img src="https://ui-avatars.com/api/?name=Michael+Brown&background=003399&color=fff&size=48&bold=true&rounded=true" alt="Michael Brown" class="w-12 h-12 rounded-full mr-3">
+                                        <div>
+                                            <h4 class="font-semibold text-gray-900 text-sm mb-1">Michael Brown</h4>
+                                            <p class="text-xs text-gray-500">15/5/2023</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="swiper-pagination testimonials-pagination !relative !mt-8"></div>
+                    </div>
+                    <div tabindex="0" role="button" aria-label="Previous slide" class="swiper-button-prev testimonials-button-prev !left-0 md:!-left-6 transition-all duration-300 hover:scale-110 active:scale-95 hover:bg-gray-100 rounded-full focus:outline-none focus:ring-2 focus:ring-gray-300 focus:ring-offset-2 cursor-pointer"></div>
+                    <div tabindex="0" role="button" aria-label="Next slide" class="swiper-button-next testimonials-button-next !right-0 md:!-right-6 transition-all duration-300 hover:scale-110 active:scale-95 hover:bg-gray-100 rounded-full focus:outline-none focus:ring-2 focus:ring-gray-300 focus:ring-offset-2 cursor-pointer"></div>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mt-15 pt-12 border-t border-gray-200">
+                    <div class="text-center">
+                        <div class="text-4xl md:text-5xl font-bold text-gray-900 mb-2">4.9/5</div>
+                        <div class="text-sm md:text-base text-gray-500 font-medium">Average Rating</div>
+                    </div>
+                    <div class="text-center border-x border-gray-200">
+                        <div class="text-4xl md:text-5xl font-bold text-gray-900 mb-2">1500+</div>
+                        <div class="text-sm md:text-base text-gray-500 font-medium">Happy Customers</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-4xl md:text-5xl font-bold text-gray-900 mb-2">98%</div>
+                        <div class="text-sm md:text-base text-gray-500 font-medium">Satisfaction Rate</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Tours Slider Section -->
+        <section class="py-24 overflow-hidden bg-white">
+            <div class="container mx-auto px-4 md:px-6">
+                <div class="flex flex-col md:flex-row md:items-end justify-between mb-12">
+                    <div class="max-w-2xl relative">
+                        <h2 class="text-3xl md:text-5xl font-bold mb-4">Ready for an unforgettable journey?</h2>
+                        <p class="text-gray-600 text-lg">Discover unique routes and personalized tours designed to make every moment memorable</p>
+                    </div>
+                    <a href="tours.html" class="mt-8 md:mt-0 inline-flex items-center justify-center px-8 py-4 text-base font-bold rounded-xl text-white bg-[#003399] hover:bg-blue-900 transition-all shadow-lg hover:shadow-xl">Explore All Tours</a>
+                </div>
+                
+                <div class="relative group">
+                    <div class="swiper tours-swiper pb-20">
+                        <div class="swiper-wrapper">
+                            <!-- Slide 1 -->
+                            <div class="swiper-slide h-auto">
+                                <a href="tours.html" class="block">
+                                    <div class="group relative h-[500px] rounded-[2rem] overflow-hidden shadow-xl cursor-pointer">
+                                        <img src="https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?auto=format&fit=crop&q=80&w=800" class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" alt="Tour">
+                                        <div class="absolute inset-0 bg-gradient-to-b from-black/60 via-transparent to-black/60"></div>
+                                        <div class="absolute inset-0 p-8 flex flex-col justify-between text-white">
+                                            <div>
+                                                <h3 class="text-2xl md:text-3xl font-bold mb-4 leading-tight max-w-[90%]">8 Hour Istanbul Tour with Driver - Total Price for 1-7 People</h3>
+                                                <div class="inline-flex items-center bg-white/20 backdrop-blur-md border border-white/30 px-5 py-2.5 rounded-2xl">
+                                                    <span class="text-xl font-bold mr-3">150€</span>
+                                                    <div class="w-8 h-8 bg-white rounded-full flex items-center justify-center">
+                                                        <svg class="w-5 h-5 text-[#003399]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                            <!-- Slide 2 -->
+                            <div class="swiper-slide h-auto">
+                                <a href="tours.html" class="block">
+                                    <div class="group relative h-[500px] rounded-[2rem] overflow-hidden shadow-xl cursor-pointer">
+                                        <img src="https://images.unsplash.com/photo-1541432901042-2d8bd64b4a9b?auto=format&fit=crop&q=80&w=800" class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" alt="Tour">
+                                        <div class="absolute inset-0 bg-gradient-to-b from-black/60 via-transparent to-black/60"></div>
+                                        <div class="absolute inset-0 p-8 flex flex-col justify-between text-white">
+                                            <div>
+                                                <h3 class="text-2xl md:text-3xl font-bold mb-4 leading-tight max-w-[90%]">Bosphorus Dinner Cruise - Alcoholic Beverages Included</h3>
+                                                <div class="inline-flex items-center bg-white/20 backdrop-blur-md border border-white/30 px-5 py-2.5 rounded-2xl">
+                                                    <span class="text-xl font-bold mr-3">50€</span>
+                                                    <div class="w-8 h-8 bg-white rounded-full flex items-center justify-center">
+                                                        <svg class="w-5 h-5 text-[#003399]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                            <!-- Slide 3 -->
+                            <div class="swiper-slide h-auto">
+                                <a href="tours.html" class="block">
+                                    <div class="group relative h-[500px] rounded-[2rem] overflow-hidden shadow-xl cursor-pointer">
+                                        <img src="https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?auto=format&fit=crop&q=80&w=800" class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" alt="Tour">
+                                        <div class="absolute inset-0 bg-gradient-to-b from-black/60 via-transparent to-black/60"></div>
+                                        <div class="absolute inset-0 p-8 flex flex-col justify-between text-white">
+                                            <div>
+                                                <h3 class="text-2xl md:text-3xl font-bold mb-4 leading-tight max-w-[90%]">Balloon Tour with Fascinating Landscapes in Cappadocia</h3>
+                                                <div class="inline-flex items-center bg-white/20 backdrop-blur-md border border-white/30 px-5 py-2.5 rounded-2xl">
+                                                    <span class="text-xl font-bold mr-3">50€</span>
+                                                    <div class="w-8 h-8 bg-white rounded-full flex items-center justify-center">
+                                                        <svg class="w-5 h-5 text-[#003399]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                            <!-- Duplicate slides for loop -->
+                            <div class="swiper-slide h-auto">
+                                <a href="tours.html" class="block">
+                                    <div class="group relative h-[500px] rounded-[2rem] overflow-hidden shadow-xl cursor-pointer">
+                                        <img src="https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?auto=format&fit=crop&q=80&w=800" class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" alt="Tour">
+                                        <div class="absolute inset-0 bg-gradient-to-b from-black/60 via-transparent to-black/60"></div>
+                                        <div class="absolute inset-0 p-8 flex flex-col justify-between text-white">
+                                            <div>
+                                                <h3 class="text-2xl md:text-3xl font-bold mb-4 leading-tight max-w-[90%]">8 Hour Istanbul Tour with Driver</h3>
+                                                <div class="inline-flex items-center bg-white/20 backdrop-blur-md border border-white/30 px-5 py-2.5 rounded-2xl">
+                                                    <span class="text-xl font-bold mr-3">150€</span>
+                                                    <div class="w-8 h-8 bg-white rounded-full flex items-center justify-center">
+                                                        <svg class="w-5 h-5 text-[#003399]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                        
+                        <!-- Navigation and Pagination Container -->
+                        <div class="flex items-center justify-between mt-8">
+                            <div class="swiper-pagination tours-pagination !relative !w-auto !bottom-0 !left-0"></div>
+                            <div class="flex space-x-4">
+                                <div tabindex="0" role="button" aria-label="Previous slide" class="swiper-button-prev tours-button-prev !relative !w-12 !h-12 !top-0 !left-0 !mt-0 shadow-md transition-all duration-300 hover:scale-110 active:scale-95 hover:bg-gray-100 rounded-full focus:outline-none focus:ring-2 focus:ring-gray-300 focus:ring-offset-2 cursor-pointer"></div>
+                                <div tabindex="0" role="button" aria-label="Next slide" class="swiper-button-next tours-button-next !relative !w-12 !h-12 !top-0 !right-0 !mt-0 shadow-md bg-[#003399] !text-white transition-all duration-300 hover:scale-110 active:scale-95 hover:bg-blue-800 shadow-lg hover:shadow-blue-300/50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 cursor-pointer"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section class="py-24 bg-white overflow-hidden pt-0">
+            <div class="container mx-auto px-4 md:px-6">
+                <div class="flex flex-col lg:flex-row items-center -mx-8">
+                    <div class="lg:w-1/2 px-8 mb-12 lg:mb-0">
+                        <div class="relative">
+                            <img src="/images/meet-kaptan.png" class="rounded-3xl shadow-2xl w-full h-[400px] md:h-[500px] object-cover" alt="About Kaptan">
+                            <div class="absolute -bottom-6 -right-6 bg-white p-4 rounded-2xl shadow-xl hidden md:block">
+                                <div class="flex items-center space-x-4">
+                                    <div class="bg-blue-100 p-3 rounded-xl"><svg class="w-8 h-8 text-primary" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2L4.5 20.29L5.21 21L12 18L18.79 21L19.5 20.29L12 2Z" /></svg></div>
+                                    <div><div class="text-xl font-bold">10+ Years</div><div class="text-gray-500 text-sm">Experience</div></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="lg:w-1/2 px-8">
+                        <div class="mb-10">
+                            <h4 class="text-sm font-bold text-gray-400 uppercase tracking-widest mb-3">Meet Kaptan</h4>
+                            <h2 class="text-3xl md:text-5xl font-bold mb-6">Hi, We're Kaptan Transfers</h2>
+                            <p class="text-gray-600 mb-6 leading-relaxed">Founded with a vision to redefine luxury transportation in Turkey, Kaptan Transfers bridges the gap between Turkish hospitality and European service standards.</p>
+                            <p class="text-gray-900 font-semibold mb-6">Our mission <span class="text-gray-600 font-normal">is simple: to provide seamless, safe, and sophisticated travel experiences.</span></p>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            <div class="bg-gray-50 p-6 rounded-2xl">
+                                <div class="bg-white w-10 h-10 rounded-lg flex items-center justify-center shadow-sm mb-4"><img src="/images/healtcare.png" alt=""></div>
+                                <h5 class="font-bold mb-2">Safety First</h5><p class="text-xs text-gray-500">Certified professional drivers and fully insured luxury vehicles.</p>
+                            </div>
+                            <div class="bg-gray-50 p-6 rounded-2xl">
+                                <div class="bg-white w-10 h-10 rounded-lg flex items-center justify-center shadow-sm mb-4"><img src="/images/elements.png" alt=""></div>
+                                <h5 class="font-bold mb-2">Reliable & On-Time</h5><p class="text-xs text-gray-500">We value your time. Guaranteed punctuality for every trip.</p>
+                            </div>
+                            <div class="bg-gray-50 p-6 rounded-2xl">
+                                <div class="bg-white w-10 h-10 rounded-lg flex items-center justify-center shadow-sm mb-4"><img src="/images/stars.png" alt=""></div>
+                                <h5 class="font-bold mb-2">VIP Experience</h5><p class="text-xs text-gray-500">Premium amenities and personalized service tailored to you.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Special Moments Section -->
+        <section class="py-24 bg-white overflow-hidden">
+            <div class="container mx-auto px-4 md:px-6">
+                <div class="flex flex-col md:flex-row md:items-end justify-between mb-12">
+                    <div>
+                        <h2 class="text-3xl md:text-5xl font-bold mb-4">Special Moments</h2>
+                        <p class="text-gray-600 text-lg">Beautiful real moments from our travelers.</p>
+                    </div>
+                    <a href="#" class="mt-6 md:mt-0 inline-flex items-center justify-center px-8 py-4 text-base font-bold rounded-xl text-white bg-[#003399] hover:bg-blue-900 transition-all shadow-lg hover:shadow-xl">Explore All Moments</a>
+                </div>
+                
+                <div class="relative group">
+                    <div class="swiper moments-swiper pb-20">
+                        <div class="swiper-wrapper items-center">
+                            <div class="swiper-slide !w-[300px] md:!w-[600px]">
+                                <div class="rounded-[2rem] overflow-hidden h-[300px] md:h-[450px]">
+                                    <img src="https://images.unsplash.com/photo-1527631746610-bca00a040d60?auto=format&fit=crop&q=80&w=800" class="w-full h-full object-cover transition-transform duration-700" alt="Moment">
+                                </div>
+                            </div>
+                            <div class="swiper-slide !w-[300px] md:!w-[600px]">
+                                <div class="rounded-[2rem] overflow-hidden h-[300px] md:h-[450px]">
+                                    <img src="https://images.unsplash.com/photo-1530789253388-582c481c54b0?auto=format&fit=crop&q=80&w=1000" class="w-full h-full object-cover transition-transform duration-700" alt="Moment">
+                                </div>
+                            </div>
+                            <div class="swiper-slide !w-[300px] md:!w-[600px]">
+                                <div class="rounded-[2rem] overflow-hidden h-[300px] md:h-[450px]">
+                                    <img src="https://images.unsplash.com/photo-1519046904884-53103b34b206?auto=format&fit=crop&q=80&w=800" class="w-full h-full object-cover transition-transform duration-700" alt="Moment">
+                                </div>
+                            </div>
+                            <div class="swiper-slide !w-[300px] md:!w-[600px]">
+                                <div class="rounded-[2rem] overflow-hidden h-[300px] md:h-[450px]">
+                                    <img src="https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&q=80&w=800" class="w-full h-full object-cover transition-transform duration-700" alt="Moment">
+                                </div>
+                            </div>
+                            <div class="swiper-slide !w-[300px] md:!w-[600px]">
+                                <div class="rounded-[2rem] overflow-hidden h-[300px] md:h-[450px]">
+                                    <img src="https://images.unsplash.com/photo-1519046904884-53103b34b206?auto=format&fit=crop&q=80&w=800" class="w-full h-full object-cover transition-transform duration-700" alt="Moment">
+                                </div>
+                            </div>
+                            <div class="swiper-slide !w-[300px] md:!w-[600px]">
+                                <div class="rounded-[2rem] overflow-hidden h-[300px] md:h-[450px]">
+                                    <img src="https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&q=80&w=800" class="w-full h-full object-cover transition-transform duration-700" alt="Moment">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Bottom Navigation Arrows -->
+                        <div class="flex items-center justify-center space-x-8 mt-20">
+                            <div tabindex="0" role="button" aria-label="Previous slide" class="swiper-button-prev moments-button-prev !relative !top-0 !left-0 !mt-0 transition-all duration-300 hover:scale-110 active:scale-95 hover:bg-gray-100 rounded-full focus:outline-none focus:ring-2 focus:ring-gray-300 focus:ring-offset-2 cursor-pointer">
+                                <img src="/images/arrow-left-01-round.svg" alt="" class="w-10 h-10">
+                            </div>
+                            <div tabindex="0" role="button" aria-label="Next slide" class="swiper-button-next moments-button-next !relative !top-0 !right-0 !mt-0 transition-all duration-300 hover:scale-110 active:scale-95 hover:bg-blue-800 shadow-lg hover:shadow-blue-300/50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 cursor-pointer flex items-center justify-center rounded-full bg-[#003399]">
+                                <img src="/images/arrow-right-01-round.svg" alt="" class="w-10 h-10 brightness-0 invert">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Help & FAQ Section -->
+        <section class="py-24 bg-[#F8FAFC]">
+            <div class="container mx-auto px-4 md:px-6">
+                <!-- Help Cards -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-20">
+                    <div class="relative bg-white p-8 md:p-10 rounded-[2rem] shadow-sm border border-gray-100 overflow-hidden group">
+                        <div class="absolute bottom-0 right-0 w-32 h-32 bg-blue-50 rounded-tl-full opacity-50 transition-transform group-hover:scale-110"></div>
+                        <div class="relative z-10">
+                            <h3 class="text-2xl font-bold mb-4 text-center">Need Help? Get in Touch</h3>
+                            <p class="text-gray-600 mb-8 text-center max-w-md mx-auto">If you face any issue, you can reach us easily through the following channels or send a message directly below.</p>
+                            <div class="flex flex-wrap justify-center gap-3">
+                                <a href="mailto:info@viptransfer.com" class="flex items-center space-x-2 bg-gray-50 hover:bg-gray-100 px-5 py-3 rounded-xl transition-colors border border-gray-100">
+                                    <svg class="w-5 h-5 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                                    <span class="font-bold text-gray-700">Email</span>
+                                </a>
+                                <a href="https://wa.me/905001234567" class="flex items-center space-x-2 bg-[#25D366] hover:bg-[#20ba5a] px-5 py-3 rounded-xl transition-colors text-white shadow-md shadow-green-100">
+                                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.067 2.877 1.215 3.076.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"></path></svg>
+                                    <span class="font-bold">WhatsApp</span>
+                                </a>
+                                <a href="#" class="flex items-center space-x-2 bg-[#1877F2] hover:bg-[#166fe5] px-5 py-3 rounded-xl transition-colors text-white shadow-md shadow-blue-100">
+                                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"></path></svg>
+                                    <span class="font-bold">Facebook</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="relative bg-white p-8 md:p-10 rounded-[2rem] shadow-sm border border-gray-100 overflow-hidden group">
+                        <div class="absolute bottom-0 right-0 w-32 h-32 bg-blue-50 rounded-tl-full opacity-50 transition-transform group-hover:scale-110"></div>
+                        <div class="relative z-10 flex flex-col items-center justify-center h-full text-center">
+                            <h3 class="text-2xl font-bold mb-4">24/7 Availability</h3>
+                            <p class="text-gray-600 max-w-sm">We're here for you anytime, all week long — ensuring comfort and seamless travel</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FAQ Section -->
+                <div class="max-w-4xl mx-auto">
+                    <div class="text-center mb-16">
+                        <h2 class="text-4xl font-bold mb-4">FAQS</h2>
+                        <p class="text-gray-600">Find quick answers to the most common questions about our transfer services</p>
+                    </div>
+                    
+                    <div x-data="{ active: 1 }" class="space-y-4">
+                        <!-- FAQ Item 1 -->
+                        <div class="bg-white rounded-3xl border border-gray-100 overflow-hidden transition-all duration-300">
+                            <button @click="active = (active === 1 ? 0 : 1)" class="w-full flex items-center justify-between p-6 text-left hover:bg-gray-50/50 transition-colors">
+                                <span class="text-lg font-bold text-gray-900">Can I modify or cancel my booking?</span>
+                                <div class="w-6 h-6 rounded-full border border-gray-300 flex items-center justify-center flex-shrink-0 transition-colors" :class="active === 1 ? 'border-gray-900 bg-gray-900 text-white' : 'text-gray-500'">
+                                    <span class="text-xl leading-none" x-text="active === 1 ? '−' : '+' "></span>
+                                </div>
+                            </button>
+                            <div x-show="active === 1" x-collapse>
+                                <div class="p-6 pt-0 text-gray-600 leading-relaxed">
+                                    Yes, you can modify or cancel your booking up to 24 hours before your trip at no extra charge.
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- FAQ Item 2 -->
+                        <div class="bg-white rounded-3xl border border-gray-100 overflow-hidden transition-all duration-300">
+                            <button @click="active = (active === 2 ? 0 : 2)" class="w-full flex items-center justify-between p-6 text-left hover:bg-gray-50/50 transition-colors">
+                                <span class="text-lg font-bold text-gray-900">What happens if my flight is delayed?</span>
+                                <div class="w-6 h-6 rounded-full border border-gray-300 flex items-center justify-center flex-shrink-0 transition-colors" :class="active === 2 ? 'border-gray-900 bg-gray-900 text-white' : 'text-gray-500'">
+                                    <span class="text-xl leading-none" x-text="active === 2 ? '−' : '+' "></span>
+                                </div>
+                            </button>
+                            <div x-show="active === 2" x-collapse>
+                                <div class="p-6 pt-0 text-gray-600 leading-relaxed">
+                                    We track your flight in real-time. Your driver will wait for you regardless of any delays.
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- FAQ Item 3 -->
+                        <div class="bg-white rounded-3xl border border-gray-100 overflow-hidden transition-all duration-300">
+                            <button @click="active = (active === 3 ? 0 : 3)" class="w-full flex items-center justify-between p-6 text-left hover:bg-gray-50/50 transition-colors">
+                                <span class="text-lg font-bold text-gray-900">Can I book a private or group vehicle?</span>
+                                <div class="w-6 h-6 rounded-full border border-gray-300 flex items-center justify-center flex-shrink-0 transition-colors" :class="active === 3 ? 'border-gray-900 bg-gray-900 text-white' : 'text-gray-500'">
+                                    <span class="text-xl leading-none" x-text="active === 3 ? '−' : '+' "></span>
+                                </div>
+                            </button>
+                            <div x-show="active === 3" x-collapse>
+                                <div class="p-6 pt-0 text-gray-600 leading-relaxed">
+                                    Yes, we offer both private VIP cars and larger group vans to suit your needs.
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- FAQ Item 4 -->
+                        <div class="bg-white rounded-3xl border border-gray-100 overflow-hidden transition-all duration-300">
+                            <button @click="active = (active === 4 ? 0 : 4)" class="w-full flex items-center justify-between p-6 text-left hover:bg-gray-50/50 transition-colors">
+                                <span class="text-lg font-bold text-gray-900">Do the drivers speak English or Arabic?</span>
+                                <div class="w-6 h-6 rounded-full border border-gray-300 flex items-center justify-center flex-shrink-0 transition-colors" :class="active === 4 ? 'border-gray-900 bg-gray-900 text-white' : 'text-gray-500'">
+                                    <span class="text-xl leading-none" x-text="active === 4 ? '−' : '+' "></span>
+                                </div>
+                            </button>
+                            <div x-show="active === 4" x-collapse>
+                                <div class="p-6 pt-0 text-gray-600 leading-relaxed">
+                                    Yes, our professional drivers are multilingual and speak English and Arabic.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="bg-white pt-24 pb-12 border-t border-gray-100">
+            <div class="container mx-auto px-4 md:px-6">
+                <div class="grid grid-cols-1 md:grid-cols-12 gap-12 mb-20">
+                    <!-- Brand Column -->
+                    <div class="md:col-span-4">
+                        <a href="#" class="inline-block mb-8">
+                            <img src="images/logo-blue.png" alt="Kaptan Logo" class="h-12 w-auto">
+                        </a>
+                        <p class="text-gray-600 text-lg leading-relaxed mb-10 max-w-sm">
+                            Istanbul's most reliable and comfortable transfer service. Safe journeys with premium vehicles and professional drivers.
+                        </p>
+                        <div class="flex space-x-4">
+                            <a href="#" class="w-12 h-12 rounded-full bg-gray-50 flex items-center justify-center text-gray-900 hover:bg-[#003399] hover:text-white transition-all duration-300">
+                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"></path></svg>
+                            </a>
+                            <a href="#" class="w-12 h-12 rounded-full bg-gray-50 flex items-center justify-center text-gray-900 hover:bg-[#003399] hover:text-white transition-all duration-300">
+                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"></path></svg>
+                            </a>
+                            <a href="#" class="w-12 h-12 rounded-full bg-gray-50 flex items-center justify-center text-gray-900 hover:bg-[#003399] hover:text-white transition-all duration-300">
+                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.25 2.25h6.834l4.66 6.157L18.244 2.25zm-1.16 17.52h1.833L7.084 4.126H5.117L17.084 19.77z"></path></svg>
+                            </a>
+                            <a href="#" class="w-12 h-12 rounded-full bg-gray-50 flex items-center justify-center text-gray-900 hover:bg-[#003399] hover:text-white transition-all duration-300">
+                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"></path></svg>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Links Columns -->
+                    <div class="md:col-span-2">
+                        <h4 class="text-gray-900 font-bold text-lg mb-8">Quick Links</h4>
+                        <ul class="space-y-4">
+                            <li><a href="#" class="text-gray-600 hover:text-[#003399] transition-colors">About Us</a></li>
+                            <li><a href="#" class="text-gray-600 hover:text-[#003399] transition-colors">Our Services</a></li>
+                            <li><a href="tours.html" class="text-gray-600 hover:text-[#003399] transition-colors">Tours</a></li>
+                            <li><a href="#" class="text-gray-600 hover:text-[#003399] transition-colors">FAQ</a></li>
+                            <li><a href="#" class="text-gray-600 hover:text-[#003399] transition-colors">Join as Driver</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="md:col-span-2">
+                        <h4 class="text-gray-900 font-bold text-lg mb-8">Our Services</h4>
+                        <ul class="space-y-4">
+                            <li><a href="#" class="text-gray-600 hover:text-[#003399] transition-colors">Private Chauffeur Service</a></li>
+                            <li><a href="#" class="text-gray-600 hover:text-[#003399] transition-colors">Airport Transfer</a></li>
+                            <li><a href="#" class="text-gray-600 hover:text-[#003399] transition-colors">VIP Transfer</a></li>
+                            <li><a href="#" class="text-gray-600 hover:text-[#003399] transition-colors">Hourly Rental</a></li>
+                        </ul>
+                    </div>
+
+                    <!-- Contact Column -->
+                    <div class="md:col-span-4">
+                        <h4 class="text-gray-900 font-bold text-lg mb-8">Contact Us</h4>
+                        <ul class="space-y-6">
+                            <li class="flex items-start space-x-4">
+                                <div class="bg-blue-50 p-2 rounded-lg text-[#003399]">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path></svg>
+                                </div>
+                                <span class="text-gray-600 text-lg font-medium">+90 500 765 43 21</span>
+                            </li>
+                            <li class="flex items-start space-x-4">
+                                <div class="bg-blue-50 p-2 rounded-lg text-[#003399]">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                                </div>
+                                <span class="text-gray-600 text-lg font-medium">info@viptransfer.com.tr</span>
+                            </li>
+                            <li class="flex items-start space-x-4">
+                                <div class="bg-blue-50 p-2 rounded-lg text-[#003399]">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                                </div>
+                                <span class="text-gray-600 text-lg font-medium leading-relaxed">Beşiktaş, Istanbul, Turkey</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Footer Bottom -->
+                <div class="pt-8 border-t border-gray-100 flex flex-col md:flex-row items-center justify-between gap-4">
+                    <p class="text-gray-900 font-bold">© 2025 VIP Transfer. All rights reserved.</p>
+                    <div class="flex space-x-8">
+                        <a href="#" class="text-gray-500 hover:text-[#003399] text-sm transition-colors">Terms and Conditions</a>
+                        <a href="#" class="text-gray-500 hover:text-[#003399] text-sm transition-colors">Privacy Policy</a>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Swiper JS -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Testimonials Swiper
+            new Swiper('.testimonials-swiper', {
+                slidesPerView: 1.2,
+                centeredSlides: false,
+                initialSlide: 0,
+                spaceBetween: 30,
+                loop: true,
+                watchSlidesProgress: true,
+                observer: true,
+                observeParents: true,
+                autoplay: {
+                    delay: 3000,
+                    disableOnInteraction: false,
+                },
+                pagination: {
+                    el: '.testimonials-pagination',
+                    clickable: true,
+                },
+                navigation: {
+                    nextEl: '.testimonials-button-next',
+                    prevEl: '.testimonials-button-prev',
+                },
+                breakpoints: {
+                    768: {
+                        slidesPerView: 3.2,
+                        centeredSlides: false,
+                        spaceBetween: 20,
+                        loop: true,
+                    }
+                }
+            });
+
+            // Tours Swiper
+            new Swiper('.tours-swiper', {
+                slidesPerView: 1.2,
+                centeredSlides: false,
+                initialSlide: 0,
+                spaceBetween: 30,
+                loop: true,
+                loopedSlides: 6,
+                watchSlidesProgress: true,
+                observer: true,
+                observeParents: true,
+                autoplay: {
+                    delay: 4000,
+                    disableOnInteraction: false,
+                },
+                pagination: {
+                    el: '.tours-pagination',
+                    clickable: true,
+                },
+                navigation: {
+                    nextEl: '.tours-button-next',
+                    prevEl: '.tours-button-prev',
+                },
+                breakpoints: {
+                    768: {
+                        slidesPerView: 3.2,
+                        centeredSlides: false,
+                        spaceBetween: 30,
+                    }
+                }
+            });
+
+            // Moments Swiper
+            new Swiper('.moments-swiper', {
+                slidesPerView: 'auto',
+                centeredSlides: true,
+                spaceBetween: 30,
+                loop: true,
+                watchSlidesProgress: true,
+                observer: true,
+                observeParents: true,
+                autoplay: {
+                    delay: 3500,
+                    disableOnInteraction: false,
+                },
+                navigation: {
+                    nextEl: '.moments-button-next',
+                    prevEl: '.moments-button-prev',
+                },
+            });
+        });
+    </script>
+</body>
+</html>
