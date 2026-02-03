@@ -16,32 +16,126 @@
         }
         [x-cloak] { display: none !important; }
         
-        /* Smooth animations */
-        .vehicle-card {
-            transition: all 0.3s ease;
+        /* Smooth Scroll */
+        html {
+            scroll-behavior: smooth;
         }
+        
+        /* Enhanced animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+        
+        @keyframes scaleIn {
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+        
+        .fade-in-up {
+            animation: fadeInUp 0.6s ease-out;
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.5s ease-out;
+        }
+        
+        .scale-in {
+            animation: scaleIn 0.4s ease-out;
+        }
+        
+        /* Smooth transitions for all interactive elements */
+        * {
+            transition-property: transform, opacity, box-shadow, background-color, border-color;
+            transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+            transition-duration: 200ms;
+        }
+        
+        /* Vehicle card animations */
+        .vehicle-card {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+        }
+        
         .vehicle-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
         }
         
         /* Badge animations */
         @keyframes pulse-badge {
             0%, 100% { opacity: 1; }
-            50% { opacity: 0.8; }
+            50% { opacity: 0.9; }
         }
+        
         .popular-badge {
-            animation: pulse-badge 2s ease-in-out infinite;
+            animation: pulse-badge 3s ease-in-out infinite;
         }
         
         /* Price highlight */
         .price-highlight {
             background: linear-gradient(135deg, #003399 0%, #0044cc 100%);
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 2px 4px 0 rgba(0, 51, 153, 0.2);
+        }
+        
+        .price-highlight:hover {
+            box-shadow: 0 4px 8px 0 rgba(0, 51, 153, 0.3);
         }
         
         /* Trust badge */
         .trust-indicator {
             background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        }
+        
+        /* Reservation card animations */
+        .reservation-card {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+        }
+        
+        /* Header scroll animation */
+        header {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        /* Button animations */
+        button {
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        button:hover {
+            transform: translateY(-1px);
+        }
+        
+        button:active {
+            transform: translateY(0);
+        }
+        
+        /* Smooth image loading */
+        img {
+            transition: opacity 0.3s ease-in-out;
         }
     </style>
     <script>
@@ -64,7 +158,7 @@
 <body class="bg-white text-gray-900 font-sans">
     <div id="app" x-data="{ mobileMenuOpen: false, scrolled: false }" @scroll.window="scrolled = (window.pageYOffset > 20) ? true : false">
         <!-- Navigation Header -->
-        <header class="bg-white fixed w-full z-50 transition-all duration-300 border-b border-gray-100">
+        <header class="bg-white fixed w-full z-50 transition-all duration-300 border-b border-gray-100 shadow-sm">
             <div class="container mx-auto px-4 md:px-6">
                 <div class="flex items-center justify-between h-20">
                     <div class="flex-shrink-0 flex items-center">
@@ -881,5 +975,29 @@
             </div>
         </footer>
     </div>
+    
+    <script>
+        // Scroll-triggered animations
+        document.addEventListener('DOMContentLoaded', function() {
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+            
+            const observer = new IntersectionObserver(function(entries) {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('fade-in');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
+            
+            // Observe sections and vehicle cards for fade-in animation
+            document.querySelectorAll('section, .vehicle-card').forEach(element => {
+                observer.observe(element);
+            });
+        });
+    </script>
 </body>
 </html>
