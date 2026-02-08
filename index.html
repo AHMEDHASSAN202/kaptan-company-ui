@@ -328,7 +328,7 @@
         </header>
         
         <!-- Hero Section -->
-        <section class="relative min-h-screen flex flex-col justify-center pt-20 overflow-visible">
+        <section class="relative min-h-screen flex flex-col justify-center pt-20 overflow-visible hero-section">
             <div class="absolute inset-0 z-0">
                 <img src="images/hero-section-image.png" class="w-full h-full object-cover" alt="Hero Background">
                 <div class="absolute inset-0 bg-gradient-to-b from-black/60 via-black/20 to-white"></div>
@@ -1194,6 +1194,9 @@
             
             // Observe sections for fade-in animation
             document.querySelectorAll('section').forEach(section => {
+                if (section.classList.contains('hero-section')) {
+                    return;
+                }
                 observer.observe(section);
             });
         });
